@@ -1,4 +1,5 @@
 #include "stdlib.h"
+typedef unsigned int uint;
 
 class Board
 {

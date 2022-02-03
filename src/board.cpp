@@ -1,5 +1,5 @@
 #include "board.hpp"
-
+#include "stdlib.h"
 
 Board::Board(uint width, uint height): width(width), height(height)
 {

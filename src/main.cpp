@@ -6,7 +6,8 @@
 #define HEIGHT 40
 #define SCALE 10
 
-#define I(X,Y) (Y*WIDTH + X)*4
+#define CHANNELS 4 // RGBA
+#define I(X,Y) (Y*WIDTH + X)*CHANNELS
 #define RED 0
 #define GREEN 1
 #define BLUE 2
@@ -18,7 +19,7 @@ int main()
 {
     RenderWindow window(VideoMode(WIDTH*SCALE, HEIGHT*SCALE), "Game of Life");
 
-    Uint8 pixels[WIDTH*HEIGHT*4*SCALE*SCALE];
+    Uint8 pixels[WIDTH*HEIGHT*CHANNELS*SCALE*SCALE];
 
     Board board(WIDTH, HEIGHT);
 
