@@ -1,11 +1,23 @@
+UNAME    := $(shell uname)
+LDFLAGS  := -lsfml-graphics -lsfml-window -lsfml-system
+
+
+ifeq ($(UNAME), Linux)
+LDFLAGS  := -L/usr/lib $(LFLAGS)
 CXX      := -c++
 CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror
-LDFLAGS  := -L/usr/lib -lstdc++ -lm -lsfml-graphics -lsfml-window -lsfml-system
+INCLUDE  := -Iinclude/
+else
+LDFLAGS  := -L/opt/homebrew/Cellar/sfml/2.5.1_1/lib/ -lsfml-graphics -lsfml-window -lsfml-system
+CXX      := -g++
+CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror -std=c++11
+INCLUDE  := -I/opt/homebrew/Cellar/sfml/2.5.1_1/include -Iinclude/
+endif
+
 BUILD    := ./build
 OBJ_DIR  := $(BUILD)/objects
 APP_DIR  := $(BUILD)/apps
 TARGET   := my_app
-INCLUDE  := -Iinclude/
 SRC      :=                      \
    $(wildcard src/module1/*.cpp) \
    $(wildcard src/module2/*.cpp) \
