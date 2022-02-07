@@ -2,7 +2,7 @@
 #include <SFML/Window.hpp>
 #include <stdlib.h> // srand rand
 #include <time.h> //time
-#include "board.h"
+#include "board.hpp"
 
 #define WIDTH 400
 #define HEIGHT 400
@@ -19,14 +19,14 @@ int main()
     RenderWindow window(VideoMode(WIDTH, HEIGHT), "Game of Life");
 
     // Create board
-    Board board = Board(WIDTH, HEIGHT);
+    Board board = Board(WIDTH, HEIGHT, SCALE);
 
     srand(time(NULL));
-    for(uint px=0; px<board.getWidth(); px++)
+    for(uint px=0; px<WIDTH/SCALE; px++)
     {
-        for(uint py=0; py<board.getHeight(); py++)
+        for(uint py=0; py<HEIGHT/SCALE; py++)
         {
-            board.colorCell(px, py, sf::Color(rand() % 255,0,0));
+            board.colorCell(px*SCALE, py*SCALE, sf::Color(rand() % 255,0,0));
         }
     }
 
