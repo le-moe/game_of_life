@@ -10,7 +10,7 @@ INCLUDE  := -Iinclude/
 else
 LDFLAGS  := -L/opt/homebrew/Cellar/sfml/2.5.1_1/lib/ -lsfml-graphics -lsfml-window -lsfml-system
 CXX      := -g++
-CXXFLAGS := -pedantic-errors -Wall -Wextra -Werror -std=c++11
+CXXFLAGS := -pedantic-errors -Wextra -Werror -std=c++11
 INCLUDE  := -I/opt/homebrew/Cellar/sfml/2.5.1_1/include -Iinclude/
 endif
 

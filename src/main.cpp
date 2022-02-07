@@ -1,27 +1,34 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-#include <board.hpp>
+#include <stdlib.h> // srand rand
+#include <time.h> //time
+#include "board.h"
 
-#define WIDTH 40
-#define HEIGHT 40
+#define WIDTH 400
+#define HEIGHT 400
 #define SCALE 10
 
-#define CHANNELS 4 // RGBA
 #define I(X,Y) (Y*WIDTH + X)*CHANNELS
-#define RED 0
-#define GREEN 1
-#define BLUE 2
-#define ALPHA 3
 
 using namespace sf;
 
+
+
 int main()
 {
-    RenderWindow window(VideoMode(WIDTH*SCALE, HEIGHT*SCALE), "Game of Life");
+    RenderWindow window(VideoMode(WIDTH, HEIGHT), "Game of Life");
 
-    Uint8 pixels[WIDTH*HEIGHT*CHANNELS*SCALE*SCALE];
+    // Create board
+    Board board = Board(WIDTH, HEIGHT);
 
-    Board board(WIDTH, HEIGHT);
+    srand(time(NULL));
+    for(uint px=0; px<board.getWidth(); px++)
+    {
+        for(uint py=0; py<board.getHeight(); py++)
+        {
+            board.colorCell(px, py, sf::Color(rand() % 255,0,0));
+        }
+    }
 
     while (window.isOpen())
     {
@@ -38,32 +45,11 @@ int main()
             printf("x: %i, y: %i\n", pos.x, pos.y);
         }
 
-        // render
-        for(uint x=0; x<WIDTH*SCALE; x++)
-        {
-            for(uint y=0; y<HEIGHT*SCALE; y++)
-            {
-                // uint value = board.getCell(x,y);
-                for(uint i=0; i<SCALE; i++)
-                {
-                    for(uint j=0; j<SCALE; j++)
-                    {
-                        pixels[I(x*SCALE+i,y*SCALE+j)] = 255;
-                        pixels[I(x*SCALE+i,y*SCALE+j)+1] = 0;
-                        pixels[I(x*SCALE+i,y*SCALE+j)+2] = 0;
-                        pixels[I(x*SCALE+i,y*SCALE+j)+3] = 255;
-                    }
-
-                }
-            }
-            
-        }
-
         Image img;
-        img.create(WIDTH*SCALE, HEIGHT*SCALE, pixels);
+        img.create(board.getWidth(), board.getHeight(), board.getPixels());
 
         Texture texture;
-        texture.create(WIDTH*SCALE,HEIGHT*SCALE);
+        texture.create(WIDTH,HEIGHT);
         texture.loadFromImage(img);
 
         Sprite sprite;

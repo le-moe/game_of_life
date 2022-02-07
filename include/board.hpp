@@ -1,13 +1,21 @@
-#include "stdlib.h"
-typedef unsigned int uint;
+#include <SFML/Graphics.hpp>
 
-class Board
+typedef unsigned int uint;
+typedef unsigned char Uint8;
+typedef unsigned int Uint32;
+
+class Board 
 {
-    public:
-        uint* cells;
+    private:
         uint width;
         uint height;
+        Uint8* pixels;
 
+    public:
         Board(uint width, uint height);
-        uint getCell(uint x, uint y);
+        void colorCell(uint posx, uint posy, sf::Color c);
+        void toArray() const; // indiquer const car toArray ne modifie pas l'instance
+        uint getWidth() const;
+        uint getHeight() const;
+        Uint8* getPixels() const;
 };
