@@ -4,9 +4,9 @@
 #include <time.h> //time
 #include "board.hpp"
 
-#define WIDTH 400
-#define HEIGHT 400
-#define SCALE 10
+#define WIDTH 40
+#define HEIGHT 40
+#define SCALE 20
 
 #define I(X,Y) (Y*WIDTH + X)*CHANNELS
 
@@ -16,19 +16,23 @@ using namespace sf;
 
 int main()
 {
-    RenderWindow window(VideoMode(WIDTH, HEIGHT), "Game of Life");
+    RenderWindow window(VideoMode(WIDTH*SCALE, HEIGHT*SCALE), "Game of Life");
 
     // Create board
     Board board = Board(WIDTH, HEIGHT, SCALE);
 
+    // Init board
     srand(time(NULL));
-    for(uint px=0; px<WIDTH/SCALE; px++)
+    for(uint px=0; px<WIDTH; px++)
     {
-        for(uint py=0; py<HEIGHT/SCALE; py++)
+        for(uint py=0; py<HEIGHT; py++)
         {
-            board.colorCell(px*SCALE, py*SCALE, sf::Color(rand() % 255,0,0));
+            board.colorCell(px, py, sf::Color(rand() % 255,0,0));
         }
     }
+
+    // board.printCells();
+    board.toArray();
 
     while (window.isOpen())
     {
@@ -46,10 +50,10 @@ int main()
         }
 
         Image img;
-        img.create(board.getWidth(), board.getHeight(), board.getPixels());
+        img.create(WIDTH*SCALE, WIDTH*SCALE, board.getPixels());
 
         Texture texture;
-        texture.create(WIDTH,HEIGHT);
+        texture.create(WIDTH*SCALE,HEIGHT*SCALE);
         texture.loadFromImage(img);
 
         Sprite sprite;
