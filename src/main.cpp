@@ -3,33 +3,17 @@
 #include <stdlib.h> // srand rand
 #include <time.h> //time
 #include "board.hpp"
-
-#define WIDTH 40
-#define HEIGHT 40
-#define SCALE 20
-
-#define I(X,Y) (Y*WIDTH + X)*CHANNELS
+#include "config.hpp"
 
 using namespace sf;
 
-
-
 int main()
 {
-    RenderWindow window(VideoMode(WIDTH*SCALE, HEIGHT*SCALE), "Game of Life");
+    RenderWindow window(VideoMode(WINW, WINH), "Game of Life");
 
     // Create board
     Board board = Board(WIDTH, HEIGHT, SCALE);
-
-    // Init board
-    srand(time(NULL));
-    for(uint px=0; px<WIDTH; px++)
-    {
-        for(uint py=0; py<HEIGHT; py++)
-        {
-            board.colorCell(px, py, sf::Color(rand() % 255,0,0));
-        }
-    }
+    board.randomize();
 
     // board.printCells();
     board.toArray();
@@ -49,11 +33,12 @@ int main()
             printf("x: %i, y: %i\n", pos.x, pos.y);
         }
 
+
         Image img;
-        img.create(WIDTH*SCALE, WIDTH*SCALE, board.getPixels());
+        img.create(WINW, WINH, board.getPixels());
 
         Texture texture;
-        texture.create(WIDTH*SCALE,HEIGHT*SCALE);
+        texture.create(WINW,WINH);
         texture.loadFromImage(img);
 
         Sprite sprite;
@@ -61,6 +46,10 @@ int main()
         window.clear();
         window.draw(sprite);
         window.display();
+        
+        sf::sleep(sf::seconds(1));
+        board.epoch();
+        board.toArray();
     }
 
     return 0;
