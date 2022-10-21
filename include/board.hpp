@@ -24,9 +24,13 @@ class Board
         void epoch(); // une iteration de l'automate
         u4 getLivingNeighbour(u4 x, u4 y) const;
         u4 getCellIdx(u4 x, u4 y) const;
+        Cell getCell(u4 x, u4 y) const;
         u4 getWidth() const;
         u4 getHeight() const;
         u1* getPixels() const;
+        void Debug();
+        void printBoard() const;
+        void printBoardNeighbour() const;
 };
 
 #endif // BOARD_HPP

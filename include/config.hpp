@@ -2,8 +2,8 @@
 #define CONFIG_HPP
 #include <stdlib.h>
 
-#define WIDTH 8
-#define HEIGHT 8
+#define WIDTH 5
+#define HEIGHT 5
 #define SCALE 100
 #define WINW ( WIDTH * SCALE)
 #define WINH ( HEIGHT * SCALE)

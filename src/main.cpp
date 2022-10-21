@@ -17,6 +17,9 @@ int main()
 
     // board.printCells();
     board.toArray();
+    // board.Debug();
+    board.printBoard();
+    board.printBoardNeighbour();
 
     while (window.isOpen())
     {
@@ -29,8 +32,8 @@ int main()
 
         if(Mouse::isButtonPressed(Mouse::Left))
         {
-            Vector2i pos = Mouse::getPosition(window);
-            printf("x: %i, y: %i\n", pos.x, pos.y);
+            // Vector2i pos = Mouse::getPosition(window);
+            // printf("x: %i, y: %i\n", pos.x, pos.y);
         }
 
 
@@ -47,9 +50,9 @@ int main()
         window.draw(sprite);
         window.display();
         
-        sf::sleep(sf::seconds(1));
-        board.epoch();
-        board.toArray();
+        // sf::sleep(sf::seconds(1));
+        // board.epoch();
+        // board.toArray();
     }
 
     return 0;

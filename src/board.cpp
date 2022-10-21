@@ -15,7 +15,28 @@ Board::Board(u4 width, u4 height, u4 scale) : width(width), height(height), scal
             cells[getCellIdx(x,y)] = Cell(x,y, false);
         }
     }
+    printf("Making board width=%u, height=%u\n", width, height);
 } // list d'initialisation pour tous les attributs
+
+void Board::Debug()
+{
+    for(u4 x=0; x<width; x++)
+    {
+        for(u4 y=0; y<height; y++)
+        {
+            u4 nalive = getLivingNeighbour(x,y);
+            u4 alive = getCell(y,x).isAlive;
+            printf("cell (%u,%u)\talive=%d\thas %u neighbour\n", x,y,alive, nalive);
+        }
+    }
+}
+
+Cell Board::getCell(u4 x, u4 y) const
+{
+    u4 idx = getCellIdx(x,y);
+    return cells[idx];
+}
+
 
 void Board::epoch()
 {
@@ -39,27 +60,73 @@ void Board::epoch()
     memcpy(cells, cells_n, sizeof(Cell) * width*height);
 }
 
+void Board::printBoard(void) const
+{
+
+    printf("Board Cells\n======\n");
+    for (u4 y=0; y<height; y++)
+    {
+        for (u4 x=0; x<width; x++)
+        {
+            Cell c = getCell(x,y);
+            char symb;
+            if (c.isAlive) {
+                symb = 'X';
+            } 
+            else {
+                symb = '0';
+            }
+            printf("%c    ", symb);
+        }
+        printf("\n");
+    }
+}
+
+void Board::printBoardNeighbour(void) const
+{
+
+    printf("Board Neghbour\n======\n");
+    for (u4 y=0; y<height; y++)
+    {
+        for (u4 x=0; x<width; x++)
+        {
+            Cell c = getCell(x,y);
+            u4 nbr = getLivingNeighbour(x,y);
+            printf("%u    ", nbr);
+        }
+        printf("\n");
+    }
+}
+
 u4 Board::getLivingNeighbour(u4 x, u4 y) const
 {
     u4 nalive = 0;
     u4 idx[8];
-    idx[0] = getCellIdx(x-1,y-1);  // topL
-    idx[1] = getCellIdx(x,y-1);  // topM
-    idx[2] = getCellIdx(x+1,y-1);  // topR
-    idx[3] = getCellIdx(x-1,y);  // left
-    idx[4] = getCellIdx(x+1,y);  // right
-    idx[5] = getCellIdx(x-1,y+1);  // botL
-    idx[6] = getCellIdx(x, y+1);  // botM
-    idx[7] = getCellIdx(x+1,y+1);  // botR
-
-    for (u4 n = 0; n<8; n++)
+    int a = (int) x; /* cast to compare with signedness */
+    int b = (int) y; /* cast to compare with signedness */
+    for ( int i=a-1; i<= a+1; i++)
     {
-        if (idx[n] < 0 or idx[n] >= width*height)
-            continue;
-        
-        if(cells[idx[n]].isAlive)
-            nalive++;
+        if (i < 0 || i >= (int) width){
+            continue; /* out of bounds */
+        }
+        for ( int j=b-1; j<=b+1; j++)
+        {
+            if (j < 0 || j >= (int) height){
+                continue; /* out of bounds */
+            }   
+            Cell target = cells[getCellIdx(i,j)];
+            if(target.isAlive)
+            {
+                nalive++;
+            }
+        }
     }
+
+    if (cells[getCellIdx(x,y)].isAlive)
+    {
+        nalive--; /* cell cannot be its own neighbour */
+    }
+
     return nalive;
 }
 
