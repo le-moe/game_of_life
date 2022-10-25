@@ -2,13 +2,18 @@
 #define CONFIG_HPP
 #include <stdlib.h>
 
-#define WIDTH 5
-#define HEIGHT 5
-#define SCALE 100
+#define WIDTH 100
+#define HEIGHT 100
+#define SCALE 10
 #define WINW ( WIDTH * SCALE)
 #define WINH ( HEIGHT * SCALE)
 
+#define TRUE 1
+#define FALSE 0
+#define SPEED 300                 /* update period in ms */
+#define RDENSITY 15               /* white random density in %age */
 
+#define DEBUG FALSE
 #define I(X,Y) (Y*WIDTH + X)*CHANNELS
 
 

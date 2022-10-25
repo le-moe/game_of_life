@@ -18,8 +18,11 @@ Board::Board(u4 width, u4 height, u4 scale) : width(width), height(height), scal
     printf("Making board width=%u, height=%u\n", width, height);
 } // list d'initialisation pour tous les attributs
 
-void Board::Debug()
+void Board::Debug(u1 debug)
 {
+    if(!debug){
+        return;
+    }
     for(u4 x=0; x<width; x++)
     {
         for(u4 y=0; y<height; y++)
@@ -38,7 +41,7 @@ Cell Board::getCell(u4 x, u4 y) const
 }
 
 
-void Board::epoch()
+void Board::epoch_gol()
 {
     Cell* cells_n = (Cell*) malloc(sizeof(Cell) * width*height);
     memcpy(cells_n, cells, sizeof(Cell) * width*height);
@@ -50,19 +53,22 @@ void Board::epoch()
             u4 nalive = getLivingNeighbour(x,y);
             u4 c_idx = getCellIdx(x,y);
             Cell current = cells[c_idx];
-            printf("%u %u - %u neighbour\n", x, y, nalive);
-            // if (current.isAlive && !(nalive == 2 or nalive == 3))
-            //     cells_n[c_idx].die();
-            // if (!current.isAlive && nalive == 3)
-            //     cells_n[c_idx].live();
+            // printf("%u %u - %u neighbour\n", x, y, nalive);
+            if (current.isAlive && !(nalive == 2 or nalive == 3))
+                cells_n[c_idx].die();
+            if (!current.isAlive && nalive == 3)
+                cells_n[c_idx].live();
         }
     }
     memcpy(cells, cells_n, sizeof(Cell) * width*height);
 }
 
-void Board::printBoard(void) const
+void Board::printBoard(u1 debug) const
 {
 
+    if (!debug) {
+        return;
+    }
     printf("Board Cells\n======\n");
     for (u4 y=0; y<height; y++)
     {
@@ -82,8 +88,11 @@ void Board::printBoard(void) const
     }
 }
 
-void Board::printBoardNeighbour(void) const
+void Board::printBoardNeighbour(u1 debug) const
 {
+    if(!debug){
+        return;
+    }
 
     printf("Board Neghbour\n======\n");
     for (u4 y=0; y<height; y++)
@@ -132,12 +141,14 @@ u4 Board::getLivingNeighbour(u4 x, u4 y) const
 
 void Board::randomize()
 {
+    float density = (float) RDENSITY / 100.0f;
+    int threshold = (int) (RAND_MAX * density);
     srand(time(NULL));
     for(u4 x=0; x<width; x++)
     {
         for(u4 y=0; y<height; y++)
         {
-            rand()%2==0 ? cells[getCellIdx(x,y)].live() : cells[getCellIdx(x,y)].die();
+            rand()<=threshold ? cells[getCellIdx(x,y)].live() : cells[getCellIdx(x,y)].die();
         }
     }
 }
@@ -176,6 +187,12 @@ void Board::toArray()
         } 
     }
 
+}
+
+void Board::update()
+{
+    epoch_gol();
+    toArray();
 }
 
 u1* Board::getPixels() const

@@ -9,7 +9,7 @@ using namespace sf;
 
 int main()
 {
-    RenderWindow window(VideoMode(WINW, WINH), "Game of Life");
+    RenderWindow window(VideoMode(WINW, WINH), "Cellular Automata");
 
     // Create board
     Board board = Board(WIDTH, HEIGHT, SCALE);
@@ -18,8 +18,8 @@ int main()
     // board.printCells();
     board.toArray();
     // board.Debug();
-    board.printBoard();
-    board.printBoardNeighbour();
+    board.printBoard(DEBUG);
+    board.printBoardNeighbour(DEBUG);
 
     while (window.isOpen())
     {
@@ -50,9 +50,8 @@ int main()
         window.draw(sprite);
         window.display();
         
-        // sf::sleep(sf::seconds(1));
-        // board.epoch();
-        // board.toArray();
+        sf::sleep(sf::milliseconds(SPEED));
+        board.update();
     }
 
     return 0;
